@@ -8,39 +8,52 @@ interface FreezeScreenProps {
   onDone: () => void;
 }
 
-// Các dòng chữ "giả lập đang tải" hiện lần lượt
+// Tổng thời gian "giả vờ đơ" trước khi hiện bất ngờ (ms) — troll 15 giây
+const FREEZE_DURATION = 15000;
+
+// Các dòng chữ "giả lập đang tải" hiện lần lượt rồi ĐỨNG HẲN ở dòng cuối
 const MESSAGES = [
   "Đang mở khóa phần quà...",
+  "Loading... 97%",
+  "Loading... 98%",
   "Loading... 99%",
   "Hmm... sao lâu vậy ta 🤔",
+  "Chắc mạng lag rồi 😬",
   "Oops! Màn hình hình như bị đơ rồi 😵‍💫",
+  "Đứng hình luôn rồi 🥶",
 ];
 
 export default function FreezeScreen({ onDone }: FreezeScreenProps) {
   const [msgIndex, setMsgIndex] = useState(0);
   const [shake, setShake] = useState(false);
 
-  // Lần lượt đổi dòng chữ
+  // Lần lượt đổi dòng chữ rồi dừng hẳn ở dòng cuối (giả vờ treo máy)
   useEffect(() => {
     const interval = setInterval(() => {
-      setMsgIndex((i) => Math.min(i + 1, MESSAGES.length - 1));
-    }, 1100);
+      setMsgIndex((i) => {
+        if (i >= MESSAGES.length - 1) {
+          clearInterval(interval);
+          return i;
+        }
+        return i + 1;
+      });
+    }, 1400);
     return () => clearInterval(interval);
   }, []);
 
-  // Sau ~4.5s: rung nhẹ rồi chuyển sang reveal
+  // Sau đúng 15s mới rung nhẹ rồi chuyển sang reveal
   useEffect(() => {
-    // Vài tiếng "lỗi" rải rác cho ra chất glitch
-    const g1 = setTimeout(playGlitch, 800);
-    const g2 = setTimeout(playGlitch, 2200);
+    // Vài tiếng "lỗi" rải rác cho ra chất glitch trong lúc "đơ"
+    const glitches = [1000, 3000, 6000, 9000, 12000].map((t) =>
+      setTimeout(playGlitch, t)
+    );
     const shakeTimer = setTimeout(() => {
       setShake(true);
       playGlitch();
-    }, 4000);
-    const doneTimer = setTimeout(onDone, 4800);
+    }, FREEZE_DURATION - 700);
+    const doneTimer = setTimeout(onDone, FREEZE_DURATION);
     return () => {
-      clearTimeout(g1);
-      clearTimeout(g2);
+      glitches.forEach(clearTimeout);
       clearTimeout(shakeTimer);
       clearTimeout(doneTimer);
     };
