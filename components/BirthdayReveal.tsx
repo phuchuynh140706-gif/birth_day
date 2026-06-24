@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import Image from "next/image";
 import { motion } from "framer-motion";
 import ConfettiEffect from "./ConfettiEffect";
+import QRGift from "./QRGift";
 import { playFanfare, toggleMute, isMuted } from "@/lib/sound";
 
 interface BirthdayRevealProps {
@@ -105,6 +106,7 @@ export default function BirthdayReveal({
         <p className="mb-5 text-xs italic text-purple-500">{TROLL}</p>
 
         <div className="flex flex-col gap-3">
+          <QRGift />
           <motion.button
             whileTap={{ scale: 0.95 }}
             onClick={onReveal}

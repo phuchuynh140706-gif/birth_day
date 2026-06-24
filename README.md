@@ -57,6 +57,27 @@ Có tiếng khi bắt quà, thắng/thua, glitch và một đoạn nhạc chúc 
 Người dùng có thể tắt/bật bằng nút 🔊 ở góc màn hình reveal.
 Vì giới hạn của trình duyệt mobile, âm thanh chỉ bật sau khi người dùng bấm "Bắt đầu nhiệm vụ".
 
+### 6. Mã QR ngân hàng (lì xì)
+Mở `components/QRGift.tsx`, sửa object `BANK`:
+
+```ts
+const BANK = {
+  bankCode: "VCB",            // mã ngân hàng (VietQR)
+  accountNumber: "0123456789",
+  accountName: "NGUYEN VAN A", // IN HOA, không dấu
+  message: "Mung sinh nhat nhe",
+  // amount: 50000,            // bỏ comment nếu muốn cố định số tiền
+};
+```
+
+Mã QR được tạo động qua [VietQR](https://vietqr.io) nên quét được bằng app ngân hàng / MoMo.
+Danh sách mã ngân hàng: https://api.vietqr.io/v2/banks
+
+### Mini game
+Game "Bắt quà – né bom": bắt đồ ngọt 🎁🎂⭐ (+1 điểm), tránh bom 💣💩 (mất mạng).
+Có 3 mạng ❤️, combo 🔥, và tốc độ tăng dần. Chỉnh thông số ở đầu `components/MiniGame.tsx`
+(`TARGET_SCORE`, `GAME_TIME`, `MAX_LIVES`, `BAD_CHANCE`...).
+
 ---
 
 ## ☁️ Deploy lên Vercel
