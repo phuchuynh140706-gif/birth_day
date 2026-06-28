@@ -17,7 +17,7 @@ Mở http://localhost:3000 (nên mở bằng chế độ điện thoại trong D
 ## 📱 Trải nghiệm
 
 1. **Start Screen** — màn hình mở đầu với nút "Bắt đầu nhiệm vụ".
-2. **Mini Game** — bắt quà 🎁 bánh 🎂 bóng 🎈 rơi xuống, đạt 10 điểm trong 20 giây.
+2. **Mini Game** — bắt quà 🎁 bánh 🎂 bóng 🎈, né bom 💣, đạt 15 điểm trong 25 giây.
 3. **Freeze Screen** — giả lập "máy đơ" với hiệu ứng glitch + loading bar đứng ở 99%.
 4. **Birthday Reveal** — hiện ảnh + confetti + lời chúc + chút troll nhẹ.
 
@@ -43,8 +43,8 @@ const TROLL = "Lúc nãy không phải máy đơ đâu...";
 Mở `components/MiniGame.tsx`, sửa phần cấu hình ở đầu file:
 
 ```ts
-const TARGET_SCORE = 10; // điểm cần để thắng
-const GAME_TIME = 20;    // thời gian (giây)
+const TARGET_SCORE = 15; // điểm cần để thắng
+const GAME_TIME = 25;    // thời gian (giây)
 const SPAWN_EVERY = 700; // tốc độ sinh item (ms)
 ```
 
@@ -56,22 +56,6 @@ Mở `components/FreezeScreen.tsx`, sửa mảng `MESSAGES`.
 Có tiếng khi bắt quà, thắng/thua, glitch và một đoạn nhạc chúc mừng ở màn reveal.
 Người dùng có thể tắt/bật bằng nút 🔊 ở góc màn hình reveal.
 Vì giới hạn của trình duyệt mobile, âm thanh chỉ bật sau khi người dùng bấm "Bắt đầu nhiệm vụ".
-
-### 6. Mã QR ngân hàng (lì xì)
-Mở `components/QRGift.tsx`, sửa object `BANK`:
-
-```ts
-const BANK = {
-  bankCode: "VCB",            // mã ngân hàng (VietQR)
-  accountNumber: "0123456789",
-  accountName: "NGUYEN VAN A", // IN HOA, không dấu
-  message: "Mung sinh nhat nhe",
-  // amount: 50000,            // bỏ comment nếu muốn cố định số tiền
-};
-```
-
-Mã QR được tạo động qua [VietQR](https://vietqr.io) nên quét được bằng app ngân hàng / MoMo.
-Danh sách mã ngân hàng: https://api.vietqr.io/v2/banks
 
 ### Mini game
 Game "Bắt quà – né bom": bắt đồ ngọt 🎁🎂⭐ (+1 điểm), tránh bom 💣💩 (mất mạng).

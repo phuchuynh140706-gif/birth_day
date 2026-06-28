@@ -4,7 +4,6 @@ import { useEffect, useState } from "react";
 import Image from "next/image";
 import { motion } from "framer-motion";
 import ConfettiEffect from "./ConfettiEffect";
-import QRGift from "./QRGift";
 import { playFanfare, toggleMute, isMuted } from "@/lib/sound";
 
 interface BirthdayRevealProps {
@@ -80,14 +79,14 @@ export default function BirthdayReveal({
         <p className="mb-4 text-lg font-bold text-pink-600">{MAIN_LINE}</p>
 
         {/* Khung ảnh sinh nhật */}
-        <div className="relative mx-auto mb-4 aspect-square w-full overflow-hidden rounded-2xl border-4 border-pink-200 shadow-lg">
+        <div className="relative mx-auto mb-4 aspect-[3/2] w-full overflow-hidden rounded-2xl border-4 border-pink-200 bg-white shadow-lg">
           {!imgError ? (
             <Image
               src="/birthday-photo.jpg"
               alt="Ảnh sinh nhật"
               fill
               sizes="(max-width: 420px) 100vw, 420px"
-              className="object-cover"
+              className="object-contain"
               onError={() => setImgError(true)}
               priority
             />
@@ -106,7 +105,6 @@ export default function BirthdayReveal({
         <p className="mb-5 text-xs italic text-purple-500">{TROLL}</p>
 
         <div className="flex flex-col gap-3">
-          <QRGift />
           <motion.button
             whileTap={{ scale: 0.95 }}
             onClick={onReveal}
