@@ -15,7 +15,7 @@ interface BirthdayRevealProps {
 const TITLE = "Bất ngờ chưa 🎉";
 const MAIN_LINE = "Chúc mừng sinh nhật nhaaa!";
 const WISH =
-  "Chúc bạn tuổi mới thật nhiều niềm vui, luôn xinh đẹp, may mắn, học tốt/làm tốt và lúc nào cũng cười thật tươi. Hôm nay là ngày của bạn nên phải thật vui đó nha 🎂✨";
+  "Chúc Lợn một tuổi mới thật xinh đẹp, giỏi giang, hành trình mới ít chông gai hơn và lúc nào cũng cười thật tươi. Đồng thời nhớ chuyển tiền cho bạn nha :))) 🎂✨";
 const TROLL = "Lúc nãy không phải máy đơ đâu, là bất ngờ đang load đó 😆";
 // ===========================================
 
