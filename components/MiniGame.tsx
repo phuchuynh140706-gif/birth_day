@@ -10,11 +10,11 @@ interface MiniGameProps {
 
 // ====== CẤU HÌNH GAME (chỉnh ở đây cho dễ) ======
 const TARGET_SCORE = 15; // Số điểm cần đạt để thắng
-const GAME_TIME = 25; // Thời gian chơi (giây)
-const START_SPAWN = 800; // Lúc đầu bao lâu sinh 1 item (ms)
-const MIN_SPAWN = 380; // Tốc độ sinh nhanh nhất (ms)
-const START_FALL = 3.4; // Lúc đầu item rơi trong bao lâu (giây)
-const MIN_FALL = 1.9; // Item rơi nhanh nhất (giây)
+const GAME_TIME = 35; // Thời gian chơi (giây)
+const START_SPAWN = 620; // Lúc đầu bao lâu sinh 1 item (ms)
+const MIN_SPAWN = 330; // Tốc độ sinh nhanh nhất (ms)
+const START_FALL = 4.2; // Lúc đầu item rơi trong bao lâu (giây)
+const MIN_FALL = 2.4; // Item rơi nhanh nhất (giây)
 const MAX_LIVES = 3; // Số mạng (bấm trúng bom là mất 1 mạng)
 
 const GOOD_ITEMS = ["🎁", "🎂", "🎈", "🍰", "⭐"]; // bấm được +1
@@ -42,6 +42,8 @@ export default function MiniGame({ onWin }: MiniGameProps) {
   const nextId = useRef(0);
   const wonRef = useRef(false);
   const overRef = useRef(false); // game đã kết thúc (thắng/thua) chưa
+  const spawnGapRef = useRef(START_SPAWN);
+  const fallTimeRef = useRef(START_FALL);
 
   // Reset toàn bộ về trạng thái ban đầu (dùng cho nút "Chơi lại")
   const resetGame = useCallback(() => {
@@ -60,6 +62,11 @@ export default function MiniGame({ onWin }: MiniGameProps) {
   const difficulty = 1 - timeLeft / GAME_TIME;
   const spawnGap = START_SPAWN - (START_SPAWN - MIN_SPAWN) * difficulty;
   const fallTime = START_FALL - (START_FALL - MIN_FALL) * difficulty;
+
+  useEffect(() => {
+    spawnGapRef.current = spawnGap;
+    fallTimeRef.current = fallTime;
+  }, [spawnGap, fallTime]);
 
   const endLose = useCallback((reason: string) => {
     if (overRef.current) return;
@@ -85,10 +92,13 @@ export default function MiniGame({ onWin }: MiniGameProps) {
     return () => clearInterval(timer);
   }, [status, endLose]);
 
-  // Sinh item rơi liên tục (tốc độ thay đổi theo độ khó)
+  // Sinh item rơi liên tục. Dùng timeout loop để không bị khựng khi timeLeft cập nhật mỗi giây.
   useEffect(() => {
     if (status !== "playing") return;
-    const spawner = setInterval(() => {
+    let spawner: ReturnType<typeof setTimeout>;
+
+    const spawnItem = () => {
+      if (overRef.current) return;
       const bad = Math.random() < BAD_CHANCE;
       setItems((prev) => [
         ...prev,
@@ -99,12 +109,15 @@ export default function MiniGame({ onWin }: MiniGameProps) {
             ? BAD_ITEMS[Math.floor(Math.random() * BAD_ITEMS.length)]
             : GOOD_ITEMS[Math.floor(Math.random() * GOOD_ITEMS.length)],
           left: Math.random() * 80 + 5,
-          fall: fallTime,
+          fall: fallTimeRef.current,
         },
       ]);
-    }, spawnGap);
-    return () => clearInterval(spawner);
-  }, [status, spawnGap, fallTime]);
+      spawner = setTimeout(spawnItem, spawnGapRef.current);
+    };
+
+    spawner = setTimeout(spawnItem, 250);
+    return () => clearTimeout(spawner);
+  }, [status]);
 
   // Khi đủ điểm -> thắng
   useEffect(() => {

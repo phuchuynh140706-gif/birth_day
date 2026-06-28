@@ -17,7 +17,7 @@ Mở http://localhost:3000 (nên mở bằng chế độ điện thoại trong D
 ## 📱 Trải nghiệm
 
 1. **Start Screen** — màn hình mở đầu với nút "Bắt đầu nhiệm vụ".
-2. **Mini Game** — bắt quà 🎁 bánh 🎂 bóng 🎈, né bom 💣, đạt 15 điểm trong 25 giây.
+2. **Mini Game** — bắt quà 🎁 bánh 🎂 bóng 🎈, né bom 💣, đạt 15 điểm trong 35 giây.
 3. **Freeze Screen** — giả lập "máy đơ" với hiệu ứng glitch + loading bar đứng ở 99%.
 4. **Birthday Reveal** — hiện ảnh + confetti + lời chúc + chút troll nhẹ.
 
@@ -44,7 +44,7 @@ Mở `components/MiniGame.tsx`, sửa phần cấu hình ở đầu file:
 
 ```ts
 const TARGET_SCORE = 15; // điểm cần để thắng
-const GAME_TIME = 25;    // thời gian (giây)
+const GAME_TIME = 35;    // thời gian (giây)
 const SPAWN_EVERY = 700; // tốc độ sinh item (ms)
 ```
 
